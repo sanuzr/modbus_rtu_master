@@ -1,0 +1,343 @@
+/*
+  NVSRAM2 CHIP SELECT CHANGED TO P1^1
+
+*/
+
+sbit nvcsram1	=	P1^0		;
+sbit nvcsram2	=	P1^1		; //P1^2
+sbit nvsclk		=	P2^0		;
+sbit nvdi		=	P1^6        ;
+sbit nvdo		=	P1^7        ;
+
+void nvram_write_en(unsigned char b, bit p);
+void nvram_write(unsigned char b, unsigned char c, unsigned int i);
+unsigned int nvram_read(unsigned char b, unsigned char c);
+
+void nvram_write_en(unsigned char b, bit p)
+{
+	unsigned char c, d, e;
+	int t;
+
+	if (p == 1)
+	{
+		c = 0xc0;
+	}
+	else
+	{
+		c = 0x00;
+	}
+	nvsclk = OFF;
+	nvdi = ON;
+	switch (b)
+	{
+		case 1:
+			nvcsram1 = ON;
+			break;
+		
+		case 2:
+			nvcsram2 = ON;
+			break;
+		
+	}
+	nvsclk = ON;
+	_nop_();
+	_nop_();
+	nvsclk = OFF;
+	nvdi = OFF;
+	_nop_();
+	nvsclk = ON;
+	_nop_();
+	_nop_();
+	nvsclk = OFF;
+	_nop_();
+	_nop_();
+	nvsclk = ON;
+	_nop_();
+	_nop_();
+	nvsclk = OFF;
+	d = 8;
+	e = 128;
+	while(d != 0)
+	{
+		if((c & e) == 0)
+		{
+			nvdi = OFF;
+		}
+		else
+		{
+			nvdi = ON;
+		}
+		nvsclk = ON;
+		_nop_();
+		_nop_();
+		nvsclk = OFF;
+		e = e / 2;
+		d--;
+	}
+	for(t=0; t<=10000; t++)
+	{
+		_nop_();
+		_nop_();
+		_nop_();
+		_nop_();
+	}
+	switch (b)
+	{
+		case 1:
+			nvcsram1 = OFF;
+			break;
+		
+		case 2:
+			nvcsram2 = OFF;
+			break;
+		
+	}
+}
+
+void nvram_write(unsigned char b, unsigned char c, unsigned int i)
+{
+	unsigned char d, e;
+
+	nvsclk = OFF;
+	nvdi = ON;
+	switch (b)
+	{
+		case 1:
+			nvcsram1 = ON;
+			break;
+		
+		case 2:
+			nvcsram2 = ON;
+			break;
+		
+	}
+	nvsclk = ON;
+	_nop_();
+	_nop_();
+	nvsclk = OFF;
+	nvdi = OFF;
+	_nop_();
+	nvsclk = ON;
+	_nop_();
+	_nop_();
+	nvsclk = OFF;
+	nvdi = ON;
+	_nop_();
+	nvsclk = ON;
+	_nop_();
+	_nop_();
+	nvsclk = OFF;
+	d = 6;
+	e = 32;
+	while(d != 0)
+	{
+		if((c & e) == 0)
+		{
+			nvdi = OFF;
+		}
+		else
+		{
+			nvdi = ON;
+		}
+		nvsclk = ON;
+		_nop_();
+		_nop_();
+		nvsclk = OFF;
+		e = e / 2;
+		d--;
+	}
+	c = i / 0x100;
+	d = 8;
+	e = 128;
+	while(d != 0)
+	{
+		if((c & e) == 0)
+		{
+			nvdi = OFF;
+		}
+		else
+		{
+			nvdi = ON;
+		}
+		nvsclk = ON;
+		_nop_();
+		_nop_();
+		nvsclk = OFF;
+		e = e / 2;
+		d--;
+	}
+	c = i % 0x100;
+	d = 8;
+	e = 128;
+	while(d != 0)
+	{
+		if((c & e) == 0)
+		{
+			nvdi = OFF;
+		}
+		else
+		{
+			nvdi = ON;
+		}
+		nvsclk = ON;
+		_nop_();
+		_nop_();
+		nvsclk = OFF;
+		e = e / 2;
+		d--;
+	}
+	switch (b)
+	{
+		case 1:
+			nvcsram1 = OFF;
+			break;
+		
+		case 2:
+			nvcsram2 = OFF;
+			break;
+		
+	}
+	_nop_();
+	_nop_();
+	switch (b)
+	{
+		case 1:
+			nvcsram1 = ON;
+			break;
+		
+		case 2:
+			nvcsram2 = ON;
+			break;
+		
+	}
+	while(nvdo != ON)
+	{
+		nvsclk = ON;
+		_nop_();
+		_nop_();
+		nvsclk = OFF;
+	}
+	for(i=0; i<=1000; i++)
+	{
+		_nop_();
+		_nop_();
+		_nop_();
+		_nop_();
+	}
+	switch (b)
+	{
+		case 1:
+			nvcsram1 = OFF;
+			break;
+		
+		case 2:
+			nvcsram2 = OFF;
+			break;
+		
+	}
+}
+
+unsigned int nvram_read(unsigned char b, unsigned char c)
+{
+	unsigned char d, e;
+	unsigned int i;
+
+	i = 0;
+	nvsclk = OFF;
+	nvdi = ON;
+	nvdo = ON;
+	switch (b)
+	{
+		case 1:
+			nvcsram1 = ON;
+			break;
+		
+		case 2:
+			nvcsram2 = ON;
+			break;
+		
+	}
+	nvsclk = ON;
+	_nop_();
+	_nop_();
+	nvsclk = OFF;
+	_nop_();
+	_nop_();
+	nvsclk = ON;
+	_nop_();
+	_nop_();
+	nvsclk = OFF;
+	nvdi = OFF;
+	_nop_();
+	nvsclk = ON;
+	_nop_();
+	_nop_();
+	nvsclk = OFF;
+
+	d = 6;
+	e = 32;
+	while(d != 0)
+	{
+		if((c & e) == 0)
+		{
+			nvdi = OFF;
+		}
+		else
+		{
+			nvdi = ON;
+		}
+		nvsclk = ON;
+		_nop_();
+		_nop_();
+		nvsclk = OFF;
+		e = e / 2;
+		d--;
+	}
+	nvsclk = ON;
+	_nop_();
+	_nop_();
+	nvsclk = OFF;
+	nvdo = ON;
+	d = 8;
+	e = 128;
+	while(d != 0)
+	{
+		if(nvdo == ON)
+		{
+			i = i + (e * 0x100);
+		}
+		nvsclk = ON;
+		_nop_();
+		_nop_();
+		nvsclk = OFF;
+		e = e / 2;
+		d--;
+	}
+	d = 8;
+	e = 128;
+	while(d != 0)
+	{
+		if(nvdo == ON)
+		{
+			i = i + e;
+		}
+		nvsclk = ON;
+		_nop_();
+		_nop_();
+		nvsclk = OFF;
+		e = e / 2;
+		d--;
+	}
+	switch (b)
+	{
+		case 1:
+			nvcsram1 = OFF;
+			break;
+		
+		case 2:
+			nvcsram2 = OFF;
+			break;
+		
+	}
+	return(i);
+}
