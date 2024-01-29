@@ -3,7 +3,6 @@ Project : MODBUS Library fro AVR Controllers (for SenseROD)
 Version : 1.2
 Date    : 23/03/2015
 Author  : Sujit Kr Nayak
-Company : Uniphos Envirotronic Pvt Ltd
 
 Chip type               : ATmega8
 Program type            : Application

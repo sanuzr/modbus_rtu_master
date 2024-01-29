@@ -3,7 +3,6 @@ Project : MODBUS Master Library fro AVR Controllers (Used in Otto Fuel MK-15)
 Version : 0.1
 Date    : 21/02/2018
 Author  : Sujit Kr Nayak
-Company : Uniphos Envirotronic Pvt Ltd
 
 Chip type               : ATmega328
 Program type            : Application

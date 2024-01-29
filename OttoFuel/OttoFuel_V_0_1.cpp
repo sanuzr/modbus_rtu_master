@@ -4,7 +4,6 @@
  * Version: V-0.1
  * Created: 29-01-2018 09:28:42
  * Author : Sujit Kr Nayak
- * Company: Uniphos Envirotronic Pvt Ltd
  * Configurations:
 				CPU: ATmega328PU
 				CPU Speed: 8.0MHz
@@ -328,7 +327,7 @@ void Welcome()				// Display Welcome Text on 16x2 LCD/OLED
 {
 	
 	lcd_clrscr();
-	lcd_gotoxy(0,0);	lcd_puts("      UNIPHOS       ");
+	lcd_gotoxy(0,0);	lcd_puts("       ecTech       ");
 	_delay_ms(5000);
 	/*
 	lcd_clrscr();
